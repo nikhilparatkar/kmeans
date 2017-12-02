@@ -22,9 +22,12 @@ public:
   unordered_map<long, unordered_map<std::string,double> > DTMap;
   unordered_map<std::string,long> unique_terms;
 
-  unordered_map<long,Cluster> Clusters;
-  std::vector<Cluster> ClusterSet1;
-  std::vector<Cluster> ClusterSet2;
+  unordered_map<std::string,int> stopwords;
+
+  //std::vector<Cluster> ClusterSet1;
+  //std::vector<Cluster> ClusterSet2;
+  unordered_map<int, Cluster> ClusterSet1;
+  unordered_map<int, Cluster> ClusterSet2;
 
   Kmeans(std::string indexPath, int num_docs,int k,int num_iterations);
   void buildDocumentTermMatrix();
@@ -37,6 +40,5 @@ public:
   void terminate();
   void writeDocuments();
   void printMap(unordered_map<std::string,double> map);
-
+  void testFunction();
 };
-

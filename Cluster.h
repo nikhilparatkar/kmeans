@@ -9,7 +9,7 @@ public:
   UINT64 totalDocCount;
 
   Cluster();
+  Cluster(Cluster&& other);
   void addDocumentToCluster(unordered_map<std::string,double> documentMap);
   void CalculateCentroids();
 };
-
