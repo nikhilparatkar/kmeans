@@ -7,6 +7,14 @@ Cluster::Cluster()
 {
   this->totalDocCount=0;
 }
+Cluster::Cluster(Cluster&& other)
+{
+this->clusterMap=other.clusterMap;
+this->totalDocCount=other.totalDocCount;
+// reset other
+other.totalDocCount=0;
+other.clusterMap.clear();
+}
 
 void Cluster::addDocumentToCluster(unordered_map<std::string,double> documentMap)
 {
@@ -34,4 +42,3 @@ void Cluster::CalculateCentroids()
 {
 
 }
-
