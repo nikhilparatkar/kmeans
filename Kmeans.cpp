@@ -24,7 +24,6 @@ Kmeans::Kmeans(std::string indexPath,int num_docs,int k,int num_iterations)
 
   std::vector<lemur::api::DOCID_T> docs(num_docs);
   //generate random document numbers between 1 and totalDocCount
-  //srand( time(NULL) );
   for (int i = 0; i < num_docs; i++) {
     docs[i] = 1+rand()%totalDocCount;
   }
@@ -107,6 +106,65 @@ void Kmeans::writeDocuments()
     }
 
     myfile.close();
+  }
+}
+
+/* This function writes the final clusters, unique terms (along with their DFs)
+*  and final document term matrix to the disk.
+*/
+void Kmeans::writeToDisk()
+{
+  std::ofstream myfile;
+  std::string prefix="/home/nikhil/Application/output/";
+  // time_t     rawtime;
+  // struct tm* timeinfo;
+  // time( &rawtime );
+  // timeinfo = localtime( &rawtime );
+
+  // stringstream ss;
+  // ss << timeinfo->tm_mon+1;
+  // ss<<"-";
+  // ss << timeinfo->tm_mday;
+  // string str = ss.str();
+
+  std::time_t t = std::time(0);
+  stringstream ss;
+  ss <<t;
+  string str = ss.str();
+
+  /*WRITE UNIQUE TERMS WITH DF */
+  myfile.open(prefix+"UniqueTerms_"+str+".txt");
+  unordered_map<std::string,long>::iterator it=unique_terms.begin();
+  while(it!=unique_terms.end())
+  {
+    myfile<<it->first<<":"<<it->second<<endl;
+    it++;
+  }
+  myfile.close();
+
+  /* WRITE FINAL CLUSTERS */
+  unordered_map<int,Cluster>::iterator ClusterIt = ClusterSet2.begin();
+  int count=0;
+  //Iterate over all the clusers
+  while(ClusterIt!=ClusterSet2.end())
+  {
+    stringstream scount;
+    scount <<count;
+    myfile.open(prefix+"Cluster"+scount.str()+"_"+str+".txt");
+    myfile<<"DocsAssigned:"<<ClusterIt->second.totalDocCount<<endl;
+
+    unordered_map<std::string,double>::iterator CMIt = ClusterIt->second.clusterMap.begin();
+    //Iterate over terms in each cluster
+    while(CMIt!=ClusterIt->second.clusterMap.end())
+    {
+      //term:value
+      myfile<<CMIt->first<<":"<<CMIt->second<<endl;
+      CMIt++;
+    }
+
+    myfile.close();
+    ClusterIt++;
+    count++;
   }
 }
 

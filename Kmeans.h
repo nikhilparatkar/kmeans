@@ -41,4 +41,5 @@ public:
   void writeDocuments();
   void printMap(unordered_map<std::string,double> map);
   void testFunction();
+  void writeToDisk();
 };

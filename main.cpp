@@ -78,15 +78,21 @@ int main(int argc,char *argv[])
       kmeans->getNormalizedWeights();
       kmeans->run();
       kmeans->terminate();
-
-      double totalSeconds,matrixSeconds;
+      time_t writingStart;
+      time(&writingStart);
+      kmeans->writeToDisk();
+      time_t writingEnd;
+      time(&writingEnd);
+      double totalSeconds,matrixSeconds,writeSeconds;
       time_t end;
       time(&end);
       totalSeconds = difftime(end,start);
       matrixSeconds = difftime(matrixEnd,matrixStart);
+      writeSeconds = difftime(writingEnd,writingStart);
 
       std::cout << "Total time taken (seconds):" << totalSeconds<<endl;
       std::cout << "Time taken to build document term matrix (seconds):" << matrixSeconds<<endl;
+      std::cout << "Time taken to write to disk (seconds):" << writeSeconds<<endl;
     }
 
 
